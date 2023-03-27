@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 
 export default function Register() {
-  // console.log(import.meta.env.BACKEND_PORT,'sljdfkhks');
+  const navigate = useNavigate();
 
   const [values, setValues] = useState({
     name: "",
@@ -12,6 +12,12 @@ export default function Register() {
     phone: "",
     password: "",
   });
+
+  const generateError = (err: any) => {
+    toast.error(err, {
+      position: "bottom-right",
+    });
+  };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -28,11 +34,14 @@ export default function Register() {
 
       if (data) {
         if (data.errors) {
+          const { name, email, phone, password } = data.errors;
+          if (email) generateError(email);
+          else if (phone) generateError(phone);
+        } else if(data.created){
+          navigate("/");
         }
       }
     } catch (error: any) {
-      console.log("--------------------");
-
       console.log(error.message);
     }
   };
@@ -40,7 +49,7 @@ export default function Register() {
   return (
     <>
       <div className="container">
-        <h2>Register account{import.meta.env.BACKEND_PORT}</h2>
+        <h2>Register{import.meta.env.BACKEND_PORT}</h2>
         <form onSubmit={(e) => handleSubmit(e)}>
           <div className="form-row">
             <label htmlFor="Name"></label>

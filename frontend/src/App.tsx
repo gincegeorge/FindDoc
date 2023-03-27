@@ -5,6 +5,7 @@ import { Route } from "react-router";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Homepage from "./pages/Homepage";
+import "react-toastify/dist/ReactToastify.css"
 function App() {
   return (
     <>
